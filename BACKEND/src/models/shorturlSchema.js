@@ -4,6 +4,7 @@ const shortUrlSchema = new mongoose.Schema({
   full_url: {
     type: String,
     required: true,
+    unique:true
   },
   short_url: {
     type: String,
