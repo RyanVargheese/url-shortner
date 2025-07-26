@@ -10,6 +10,6 @@ export const findUserById=async (id)=>{
 
 export const createUser=async(name,email,password)=>{
     const newUser=new User({name,email,password});
-    await User.save();
+    await newUser.save();
     return newUser;
 }

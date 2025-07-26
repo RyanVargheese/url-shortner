@@ -12,7 +12,10 @@ import cookieParser from 'cookie-parser';
 import { attachUser } from './src/utils/attachUser.js';
 
 const app=express();//instantiation
-app.use(cors())
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}))
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
