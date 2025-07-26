@@ -1,5 +1,6 @@
 
 export const errorHandler = (err,req,res,next) => {//Error Handler
+  //if any instance comes err.message will be passed
   if (err instanceof AppError) { 
     return res.status(err.statusCode).json({
       success: false,
@@ -7,7 +8,7 @@ export const errorHandler = (err,req,res,next) => {//Error Handler
     });
   }
 
-  // Fallback for unhandled errors
+  // Fallback for unhandled errors that are not the instances of
   console.error(err); // Log the full error for debugging
   res.status(500).json({
     success: false,

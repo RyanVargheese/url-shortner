@@ -1,19 +1,30 @@
-import { createShortUrlServiceWithoutUser } from "../services/short_url.service.js";
+import { createShortUrlServiceWithoutUser,createShortUrlServiceWithUser } from "../services/short_url.service.js";
 import { getShortUrl } from "../dao/short_url.js";
-import urlSchema from '../models/shorturlSchema.js';
 import wrapAsync from "../utils/tryCatchWrapper.js";
 
-export const createShortUrl=wrapAsync(async (req,res,next)=>{
-    
-        const {url}=req.body;
-        const shortUrl= await createShortUrlServiceWithoutUser(url);
-        res.status(200).json({shortUrl:process.env.APP_URL+shortUrl});
-    }
-)
+export const createShortUrl = wrapAsync(async (req, res) => {
+  const {data} = req.body; // Destructures 'url' from the request body
+  let shortUrl;
 
-export const redirectFromShortUrl=wrapAsync(async (req,res,next)=>{
+  if (req.user) { // Check if a user is authenticated (e.g., from a JWT middleware)
+    shortUrl = await createShortUrlServiceWithUser(data.url, req.user._id,data.slug); // Function to create URL for authenticated user
+  } else {
+    shortUrl = await createShortUrlServiceWithoutUser(data.url); // Function to create URL for unauthenticated user
+  }
+
+  res.status(200).json({ shortUrl: process.env.APP_URL + shortUrl }); // Responds with the full short URL
+});
+
+
+export const redirectFromShortUrl=wrapAsync(async (req,res)=>{
         const {id}=req.params;
         const url=await getShortUrl(id);
         if(!url) throw new Error("Short Url not found");
         res.redirect(url.full_url);
+})
+
+export const createCustomShortUrl=wrapAsync(async(req,res)=>{
+        const {url,slug}=req.body;
+        const shortUrl=await createShortUrlServiceWithoutUser(url,slug);
+        res.status(200).json({shortUrl:process.env.APP_URL+shortUrl})
 })

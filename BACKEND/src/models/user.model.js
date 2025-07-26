@@ -14,11 +14,10 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    required: false, // Or just omit if not required
-    default: function() { // This is a function that generates a default value
-      return getGravatarUrl(this.email); // Assumes getGravatarUrl is defined elsewhere
-    },
+    required: false,
+    default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp",
   },
+  
 });
 
 function getGravatarUrl(email) {
