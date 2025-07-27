@@ -1,5 +1,6 @@
-import { createUser, findUserByEmail } from '../dao/user.dao.js';
+import { createUser, findUserByEmail, findUserByEmailAndPassword} from '../dao/user.dao.js';
 import { signInToken } from '../utils/helper.js';
+import { ConflictError } from '../utils/errorHandler.js';
 
 export const registerUser =async (name,email,password)=>{
     const user=await findUserByEmail(email);
@@ -11,12 +12,12 @@ export const registerUser =async (name,email,password)=>{
 
 }
 
-export const loginUser=async(email,password)=>{
-    const user=await findUserByEmail(email);
-
-    if(!user || user.password == password)
-        throw new Error("Invalid Email Or Password");
-
-    const token=signInToken({id:user._id});
-    return {token,user};
+export const loginUser = async (email, password) => {
+    const user = await findUserByEmailAndPassword(email)
+    if(!user) throw new Error("Invalid email or password")
+    
+    const isPasswordValid = await user.comparePassword(password);
+    if(!isPasswordValid) throw new Error("Invalid email or password")
+    const token = signInToken({id: user._id})
+    return {token,user}
 }

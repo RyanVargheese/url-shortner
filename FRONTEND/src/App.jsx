@@ -1,10 +1,10 @@
-import HomePage from './pages/HomePage'
-import AuthPage from './pages/AuthPage'
 import { Outlet } from '@tanstack/react-router'
+import NavBar from './components/NavBar'
 
 const RouteLayout = () => {
   return (
     <>
+      <NavBar />
       <Outlet />
     </>
   )

@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api/user.api';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../store/slices/authSlice.js';
 
 const LoginForm = ({ state }) => {
     const [email, setEmail] = useState('vargheeseryan@gmail.com');
-    const [password, setPassword] = useState('password123');
+    const [password, setPassword] = useState('123456');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    const auth=useSelector((state)=>state.auth);
+    const dispatch=useDispatch();
+
 
     const handleSubmit = async () => {
         setLoading(true); // Sets a loading state to true
         setError(''); 
 
         try {
-            await loginUser(password, email);
+            const {data}=await loginUser(email,password);
+            console.log(data);
+            dispatch(login(data.user))
             setLoading(false); 
 
         } catch (err) {
