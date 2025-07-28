@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { loginUser } from '../api/user.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../store/slices/authSlice.js';
+import { useNavigate } from '@tanstack/react-router';
 
 const LoginForm = ({ state }) => {
     const [email, setEmail] = useState('vargheeseryan@gmail.com');
@@ -11,6 +12,7 @@ const LoginForm = ({ state }) => {
 
     const auth=useSelector((state)=>state.auth);
     const dispatch=useDispatch();
+    const navigate=useNavigate();
 
 
     const handleSubmit = async () => {
@@ -18,9 +20,9 @@ const LoginForm = ({ state }) => {
         setError(''); 
 
         try {
-            const {data}=await loginUser(email,password);
-            console.log(data);
-            dispatch(login(data.user))
+            const data=await loginUser(email,password);
+            dispatch(login(data.user));
+            navigate({to:"/dashboard"})
             setLoading(false); 
 
         } catch (err) {

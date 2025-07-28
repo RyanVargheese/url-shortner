@@ -9,7 +9,8 @@ export const findUserByEmailAndPassword=async (email)=>{
 }
 
 export const findUserById=async (id)=>{
-    return await User.findOne({id});
+    const userDetails= await User.findOne({_id:id});
+    return userDetails;
 }
 
 export const createUser=async(name,email,password)=>{

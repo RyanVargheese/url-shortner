@@ -1,23 +1,25 @@
-import { findUserById } from "../dao/user.dao";
-import { verifyToken } from "../utils/helper";
+import { findUserById } from "../dao/user.dao.js";
+import { verifyToken } from "../utils/helper.js";
 
-const authMiddleware=(res,req,res)=>{
+const authMiddleware=async (req,res,next)=>{
     const token=req.cookies.accessToken;
 
     if(!token)
-        throw new Error("UnAuthorized");
+        res.status(401).json({message:"UnAuthorized"});
 
     try {
         const decoded=verifyToken(token);
-        const user=findUserById(decoded);
+        const user=await findUserById(decoded.id);
 
         if(!user)
-            throw new Error("UnAuthorized");
+            return res.status(401).json({message:"UnAuthorized"});
 
         req.user=user;
         next();
     } catch (error) {
-        res.status(401).json({message:"UnAuthorized"});
+         return res.status(401).json({message:"UnAuthorized"});
     }
     
 }
+
+export default authMiddleware;

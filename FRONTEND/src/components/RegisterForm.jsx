@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { registerUser } from '../api/user.api';
+import { useNavigate } from '@tanstack/react-router';
 
 const RegisterForm = ({state}) => {
   const [name, setName] = useState('Ryan Vargheese');
@@ -7,6 +8,7 @@ const RegisterForm = ({state}) => {
   const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate=useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();    
@@ -21,6 +23,7 @@ const RegisterForm = ({state}) => {
     
     try {
       const data = await registerUser(name,email,password);
+      navigate({to:"/dashboard"});
       setLoading(false);
     } catch (err) {
       setLoading(false);
