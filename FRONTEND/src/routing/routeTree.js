@@ -5,10 +5,12 @@ import { dashBoardRoute } from "./dashboard";
 import { authRoute } from "./auth.route";
 
 
+// he root route is the top-level routing container—all your other routes
 const rootRoute=createRootRoute({
     component:RouteLayout
 })
 
+//this root route childern to be added as wekk
 rootRoute.addChildren([
     homePageRoute,
     dashBoardRoute,

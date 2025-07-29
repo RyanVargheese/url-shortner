@@ -3,6 +3,7 @@ import { getCurrentUser } from "../api/user.api.js";
 import { login } from "../store/slices/authSlice.js";
 
 // It receives a context containing shared resources like queryClient and Redux store.
+
 export const checkAuth = async ({ context }) => {
     try {
         // Destructure queryClient and store from the context object

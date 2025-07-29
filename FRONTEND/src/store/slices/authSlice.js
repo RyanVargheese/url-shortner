@@ -9,6 +9,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    // state.user sets to the data passed to the re
     login: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
