@@ -71,7 +71,7 @@ const UserUrl = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {urls.urls.reverse().map((url) => (
+            {[...urls.urls].reverse().map((url) => (
               <tr key={url._id} className="hover:bg-gray-50">
                 <td className="px-6 py-4">
                   <div className="text-sm text-gray-900 truncate max-w-xs">

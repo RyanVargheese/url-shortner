@@ -3,13 +3,12 @@ import { getShortUrl } from "../dao/short_url.js";
 import wrapAsync from "../utils/tryCatchWrapper.js";
 
 export const createShortUrl = wrapAsync(async (req, res) => {
-  const {data} = req.body; // Destructures 'url' from the request body
+  const {url,slug} = req.body;
   let shortUrl;
-
   if (req.user) { // Check if a user is authenticated (e.g., from a JWT middleware)
-    shortUrl = await createShortUrlServiceWithUser(data.url, req.user._id,data.slug); // Function to create URL for authenticated user
+    shortUrl = await createShortUrlServiceWithUser(url, req.user._id,slug); // Function to create URL for authenticated user
   } else {
-    shortUrl = await createShortUrlServiceWithoutUser(data.url); // Function to create URL for unauthenticated user
+    shortUrl = await createShortUrlServiceWithoutUser(url); // Function to create URL for unauthenticated user
   }
 
   res.status(200).json({ shortUrl: process.env.APP_URL + shortUrl }); // Responds with the full short URL
