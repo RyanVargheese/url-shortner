@@ -7,7 +7,7 @@ import { authRoute } from "./auth.route";
 
 // he root route is the top-level routing container—all your other routes
 const rootRoute=createRootRoute({
-    component:RouteLayout
+    component:RouteLayout //tells the base layout for every single page in the layout
 })
 
 //this root route childern to be added as wekk

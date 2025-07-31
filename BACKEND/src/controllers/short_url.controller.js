@@ -5,7 +5,7 @@ import wrapAsync from "../utils/tryCatchWrapper.js";
 export const createShortUrl = wrapAsync(async (req, res) => {
   const {url,slug} = req.body;
   let shortUrl;
-  if (req.user) { // Check if a user is authenticated (e.g., from a JWT middleware)
+  if (req.user) { // Check if a user is authenticated
     shortUrl = await createShortUrlServiceWithUser(url, req.user._id,slug); // Function to create URL for authenticated user
   } else {
     shortUrl = await createShortUrlServiceWithoutUser(url); // Function to create URL for unauthenticated user

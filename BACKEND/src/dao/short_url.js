@@ -7,13 +7,13 @@ export const saveShortUrl=async(longUrl,shortUrl,userId)=>{
         full_url:longUrl,
         short_url:shortUrl
     })
-    if(userId)
+    if(userId)//if the userId is provided,passing the data to the mongoose object
         newUrl.user=userId;
 
     await newUrl.save();
     }
     catch(err){
-        if(err.code==11000){
+        if(err.code==11000){//the error JSON has that code key
             throw new ConflictError("Short URL already exists");
             
         }

@@ -5,18 +5,21 @@ import { queryClient } from '../main'
 
 const UrlForm = () => {
   
-  const [url, setUrl] = useState("https://www.google.com")
-  const [shortUrl, setShortUrl] = useState()
-  const [copied, setCopied] = useState(false)
-  const [error, setError] = useState(null)
-  const [customSlug, setCustomSlug] = useState("")
-  const {isAuthenticated} = useSelector((state) => state.auth)
+  const [url, setUrl] = useState("https://www.google.com");
+  const [shortUrl, setShortUrl] = useState();
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(null);
+  const [customSlug, setCustomSlug] = useState("");
+  // useSelector is used here to extract the data from Redux Store,from there only the specific auth slice is required
+  const {isAuthenticated} = useSelector((state) => state.auth);
 
   const handleSubmit = async () => {
     try{
       const shortUrl = await createShortUrl(url,customSlug)
-      setShortUrl(shortUrl)
+      setShortUrl(shortUrl);
       queryClient.invalidateQueries({queryKey: ['userUrls']})
+      //Declaring the what queries are not fresh now from their query key.
+      //Therefore any query hook relying on that query will have to re-fetch the data.
       setError(null)
     }catch(err){
       setError(err.message)
@@ -25,6 +28,7 @@ const UrlForm = () => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shortUrl);
+    //allows copying text to clip board
     setCopied(true);
     
     // Reset the copied state after 2 seconds

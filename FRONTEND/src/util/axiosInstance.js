@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:5001",
-    timeout: 10000,
-    withCredentials:true
+    baseURL: "http://localhost:5001",//its makes the code much cleaner
+    timeout: 10000,//if server does not respond in 10 secs then the API call is aborted,saving time for the application
+    withCredentials:true //tells axios to include cookies,authorization headers
 })
 
 export default axiosInstance
