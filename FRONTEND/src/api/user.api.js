@@ -1,4 +1,5 @@
 import axiosInstance from "../util/axiosInstance";
+import { redirect } from "@tanstack/react-router";
 
 export const loginUser= async(email,password)=>{
     const {data}= await axiosInstance.post("/api/auth/login",{email,password});
@@ -11,12 +12,13 @@ export const registerUser= async(name,email,password)=>{
 }
 
 export const logoutUser= async()=>{
-    const {data}= await axiosInstance.get("/api/auth/logout",{email,password});
+    const {data}= await axiosInstance.get("/api/auth/logout");
     return data;
 }
 
 export const getCurrentUser= async()=>{
     const {data}=await axiosInstance.get("/api/auth/me");
+    redirect({to:"/"});
     return data;
 }
 

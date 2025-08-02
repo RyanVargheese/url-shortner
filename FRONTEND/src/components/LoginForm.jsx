@@ -18,11 +18,12 @@ const LoginForm = ({ state }) => {
     const handleSubmit = async () => {
         setLoading(true); // Sets a loading state to true
         setError(''); 
+        
 
         try {
             const data=await loginUser(email,password);
             dispatch(login(data.user));
-            navigate({to:"/dashboard"})
+            navigate({to:"/dashboard"});
             setLoading(false); 
 
         } catch (err) {

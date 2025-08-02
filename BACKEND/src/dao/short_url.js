@@ -14,7 +14,7 @@ export const saveShortUrl=async(longUrl,shortUrl,userId)=>{
     }
     catch(err){
         if(err.code==11000){//the error JSON has that code key
-            throw new ConflictError("Short URL already exists");
+            throw new ConflictError("You can create a Custom Url!! Short url already exists for this Link");
             
         }
         throw new Error(err);

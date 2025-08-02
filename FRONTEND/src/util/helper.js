@@ -11,7 +11,7 @@ export const checkAuth = async ({ context }) => {
         const { queryClient, store } = context;
 
         // Use queryClient.ensureQueryData to fetch or retrieve cached user data.
-        const user = await queryClient.ensureQueryData({
+        const {user} = await queryClient.ensureQueryData({
             queryKey: ["currentUser"], // Unique key for this query
             queryFn: getCurrentUser, // The asynchronous function that actually fetches the user data from an API
             retry: false

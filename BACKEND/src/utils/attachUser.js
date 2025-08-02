@@ -2,7 +2,7 @@ import { verifyToken } from "./helper.js";
 import { findUserById } from "../dao/user.dao.js";
 
 export const attachUser = async (req, res, next) => {
-  console.log(req.cookies); 
+
   const token = req.cookies.accessToken; 
 
   if (!token) return next(); 
