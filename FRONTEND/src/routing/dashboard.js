@@ -8,5 +8,5 @@ export const dashBoardRoute = createRoute({
   path: '/dashboard', // The path for this route (relative to its parent)
   component: DashboardPage,
   beforeLoad:checkAuth
-  
+  //this allows a function to execute before a component is rendered
 });

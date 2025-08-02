@@ -2,6 +2,8 @@ import wrapAsync from "../utils/tryCatchWrapper.js"
 import { loginUser,registerUser } from "../services/auth.service.js";
 import { cookieOptions } from "../config/config.js";
 
+
+//User can only be attached to the request only by registeruser and login user functions
 export const register_user =  wrapAsync( async (req, res) => {
   const {name,email,password}=req.body;
   const {token,user}= await registerUser(name,email,password);

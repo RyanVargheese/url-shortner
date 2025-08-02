@@ -4,6 +4,7 @@ import { login } from "../store/slices/authSlice.js";
 
 // It receives a context containing shared resources like queryClient and Redux store.
 
+//this function tells wheather auser has logged in or not to the application
 export const checkAuth = async ({ context }) => {
     try {
         // Destructure queryClient and store from the context object
@@ -16,12 +17,14 @@ export const checkAuth = async ({ context }) => {
             retry: false
         });
 
-        if (!user) return false;
+        
+        if (Object.keys(user).length===0) return redirect({ to: "/auth" });
+        
 
         // This updates the Redux state to reflect that the user is logged in
         store.dispatch(login(user));
         const auth = store.getState().auth;
-        if (!auth) return false;
+        if (!auth) return redirect({ to: "/auth" });
         return true;
     } catch (error) {
 

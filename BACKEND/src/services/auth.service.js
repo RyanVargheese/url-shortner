@@ -2,6 +2,7 @@ import { createUser, findUserByEmail, findUserByEmailAndPassword} from '../dao/u
 import { signInToken } from '../utils/helper.js';
 import { ConflictError } from '../utils/errorHandler.js';
 
+//This function creates a new User using Dao function and sends a signInToken as well and sends it back
 export const registerUser =async (name,email,password)=>{
     const user=await findUserByEmail(email);
     if(user)
