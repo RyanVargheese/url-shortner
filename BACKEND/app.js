@@ -11,6 +11,12 @@ import user_routes from './src/routes/user.routes.js'
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { attachUser } from './src/utils/attachUser.js';
+import connectRedis from './src/config/redis.config.js';
+
+
+const PORT = process.env.PORT || 5001;
+
+
 
 const app=express();//instantiation
 app.use(cors({
@@ -31,7 +37,24 @@ app.get('/:id',redirectFromShortUrl);
 
 app.use(errorHandler);
 
-app.listen(5001,()=>{
-    connectDB();
-    console.log("Running on 5001")
-})
+const startApplication = async () => {
+  try {
+    //Connect to the database
+    await connectDB();
+    
+    //Connect to Redis
+    await connectRedis();
+
+    //Starts a server and makes it Listen for incoming requests on a specified port
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+
+  } catch (error) {
+    console.error("Application failed to start:", error);
+    process.exit(1);
+  }
+};
+
+// Call the function to start the entire process
+startApplication();

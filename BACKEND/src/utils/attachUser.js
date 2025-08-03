@@ -9,7 +9,7 @@ export const attachUser = async (req, res, next) => {
 
   try {
     const decoded = verifyToken(token); // Function to verify and decode the JWT
-    const user = await findUserById(decoded); // Function to find user in DB by ID from decoded token
+    const user = await findUserById(decoded.id); // Function to find user in DB by ID from decoded token
     if (!user) return next();
     req.user = user; 
     next(); 
