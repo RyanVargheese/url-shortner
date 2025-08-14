@@ -1,7 +1,7 @@
 import Redis from 'redis';
 
 // Created a client instance and exporting to controller functions
-export const redisClient = Redis.createClient({ port: 6380 });
+export const redisClient = Redis.createClient({ url: 'redis://redis:6380' });
 
 //Redis clinet emits an 'error' event whenever someting wrong happens,Hence creating a listener for it
 redisClient.on('error', err => console.log('Redis Client Error', err));

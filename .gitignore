@@ -7,6 +7,7 @@ node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.backend
 
 # Logs
 *.log
@@ -30,3 +31,5 @@ out/
 .idea/          # IntelliJ IDEA
 .DS_Store       # macOS
 Thumbs.db       # Windows
+
+.dockerignore
