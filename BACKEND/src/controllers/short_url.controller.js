@@ -2,6 +2,7 @@ import { createShortUrlServiceWithoutUser, createShortUrlServiceWithUser } from 
 import { getShortUrl } from "../dao/short_url.js";
 import wrapAsync from "../utils/tryCatchWrapper.js";
 import { redisClient } from "../config/redis.config.js";
+import urlSchema from '../models/shorturlSchema.js';
 
 const DEFAULT_EXPIRATION = 3600;
 
@@ -25,7 +26,12 @@ export const redirectFromShortUrl = wrapAsync(async (req, res) => {
   const fullUrl = await redisClient.get(id);
 
   if (fullUrl) {
-    return res.redirect(JSON.parse(fullUrl));
+    res.redirect(JSON.parse(fullUrl));
+
+    incrementClickCount(id).catch(err=>{
+      console.error(`Failed to increment click count for ${id}`,err);
+    })
+
   } else {
     const url = await getShortUrl(id);
     if (!url) {
@@ -38,6 +44,10 @@ export const redirectFromShortUrl = wrapAsync(async (req, res) => {
     res.redirect(url.full_url);
   }
 });
+
+async function incrementClickCount(id){
+  await urlSchema.findOneAndUpdate({short_url:id},{$inc:{clicks:1}})
+}
 
 export const createCustomShortUrl = wrapAsync(async (req, res) => {
   const { url, slug } = req.body;

@@ -1,0 +1,48 @@
+services:
+# Each service represents a single container that will be launched when you run docker compose up
+  frontend:
+    build: FRONTEND #where is the image
+    image: ryanvargheese1/url-frontend:2
+
+    container_name: frontend #custom name of the container (when built)
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}" #Exposing the port
+    networks:
+      - url-network #which network to be a part of?
+  backend:
+    build: BACKEND
+    image: ryanvargheese1/url-backend:1
+    container_name: backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment: #specifying the environment variables
+      - MONGO_URI=${MONGO_URI_ATLAS} 
+      - APP_URL=${APP_URL}
+      - JWT_SECRET=${JWT_SECRET}
+    networks:
+      - url-network
+    depends_on: #which service to run first before this one can run 
+      - redis
+
+  redis:
+    image: redis:8
+    container_name: redis
+    ports:
+      - "6380:6380"
+    networks:
+      - url-network
+    volumes:
+      - redis-data:/data
+      # command to change the port to 6380
+    command: redis-server --port 6380
+    
+networks:
+  url-network:
+    driver: bridge
+    # best for container on a single host
+
+volumes:
+  redis-data:
+    driver: local
+    # volume data directly on the local filesystem
+
