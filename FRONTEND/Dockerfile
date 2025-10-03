@@ -1,4 +1,4 @@
-FROM node:24
+FROM node:24 AS builder
 
 WORKDIR /app
 # / means root dir
@@ -10,6 +10,16 @@ RUN npm install
 
 COPY . .
 # copying everything from . to WORKDIR
+
+# create the 'dist' folder
+RUN npm run build
+
+FROM node:24
+WORKDIR /app
+# Copy only the necessary files for production
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 5173
 #Exposing a particular port for the application to connect to external environment

@@ -2,7 +2,7 @@ services:
 # Each service represents a single container that will be launched when you run docker compose up
   frontend:
     build: FRONTEND #where is the image
-    image: ryanvargheese1/url-frontend:2
+    image: ryanvargheese1/url-frontend:3
 
     container_name: frontend #custom name of the container (when built)
     ports:
