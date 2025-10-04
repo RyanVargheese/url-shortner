@@ -1,28 +1,20 @@
-FROM node:24 AS builder
-
+# Stage 1: Build the React application
+# This stage uses Node.js to install dependencies and create the static files.
+FROM node:22-alpine AS build
 WORKDIR /app
-# / means root dir
-
-COPY package*.json .
-# copying the package.json to WORKDIR
+COPY package*.json ./
 RUN npm install
-# installing all dependencies
-
 COPY . .
-# copying everything from . to WORKDIR
-
-# create the 'dist' folder
 RUN npm run build
 
-FROM node:24
-WORKDIR /app
-# Copy only the necessary files for production
-COPY package*.json ./
-RUN npm install --omit=dev
-COPY --from=builder /app/dist ./dist
+# ----------------------------------------------------------
 
-EXPOSE 5173
-#Exposing a particular port for the application to connect to external environment
-
-CMD ["npm", "start"]
-#it would run once container is built
+# Stage 2: Serve the application with Nginx
+# This stage uses a tiny, secure Nginx web server to serve the files.
+FROM nginx:1.25-alpine
+# Copy the built static files from the 'build' stage into the Nginx web directory
+COPY --from=build /app/dist /usr/share/nginx/html
+# Tell AWS the container will be listening on port 80
+EXPOSE 80
+# The command to start the Nginx server
+CMD ["nginx", "-g", "daemon off;"]
