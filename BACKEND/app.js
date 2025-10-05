@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5001;
 
 const app=express();//instantiation
 app.use(cors({
-    origin:"http://localhost:5173",//It specifies that only requests coming from the exact origin are allowed to access your API.
+    origin:process.env.APP_URL,//It specifies that only requests coming from the exact origin are allowed to access your API.
     credentials:true
 }))
 app.use(express.json());
